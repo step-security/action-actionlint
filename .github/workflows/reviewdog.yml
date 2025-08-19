@@ -1,0 +1,52 @@
+name: reviewdog
+on: [pull_request]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  actionlint:
+    name: runner / actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: actionlint
+        uses: ./
+        with:
+          tool_name: actionlint
+
+  reviewdog:
+    name: runner / reviewdog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: actionlint w/ reviewdog
+        uses: ./
+        with:
+          actionlint_flags: examples/broken-workflow.yml
+          tool_name: reviewdog
+
+  shellcheck:
+    name: runner / shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: actionlint w/ shellcheck
+        uses: ./
+        with:
+          actionlint_flags: examples/shellcheck.yml
+          tool_name: shellcheck
+
+  pyflakes:
+    name: runner / pyflakes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: actionlint w/ pyflakes
+        uses: ./
+        with:
+          actionlint_flags: examples/pyflakes.yml
+          tool_name: pyflakes
