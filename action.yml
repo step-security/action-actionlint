@@ -51,7 +51,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://ghcr.io/amanstep/action-actionlint@sha256:32f9f12c6893daca5ab22c35a9c667d5bbbdc553b54db157c80f5882445f372f'
 branding:
   color: red
   icon: check-circle
