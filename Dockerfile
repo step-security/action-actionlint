@@ -1,36 +1,51 @@
-FROM python:3.13-alpine@sha256:9ba6d8cbebf0fb6546ae71f2a1c14f6ffd2fdab83af7fa5669734ef30ad48844
+# Single base image as requested
+FROM golang:1.24-alpine
 
-RUN pip3 install --upgrade pip && \
-  pip3 install pyflakes && \
-  rm -r /root/.cache
+# Versions
+ENV SHELLCHECK_VERSION=v0.11.0 \
+    REVIEWDOG_VERSION=v0.20.3 \
+    ACTIONLINT_VERSION=v1.7.7
 
-ENV SHELLCHEK_VERSION=v0.11.0
-RUN set -x; \
-  arch="$(uname -m)"; \
-  echo "arch is $arch"; \
-  if [ "${arch}" = 'armv7l' ]; then \
-  arch='armv6hf'; \
-  fi; \
-  url_base='https://github.com/koalaman/shellcheck/releases/download/'; \
-  tar_file="${SHELLCHEK_VERSION}/shellcheck-${SHELLCHEK_VERSION}.linux.${arch}.tar.xz"; \
-  wget "${url_base}${tar_file}" -O - | tar xJf -; \
-  mv "shellcheck-${SHELLCHEK_VERSION}/shellcheck" /bin/; \
-  rm -rf "shellcheck-${SHELLCHEK_VERSION}"; \
-  ls -laF /bin/shellcheck
+# System deps: build tools, git, curl, wget, xz for .tar.xz, python & pip
+RUN set -eux; \
+    apk add --no-cache \
+      git curl wget xz \
+      build-base \
+      python3 py3-pyflakes
 
-RUN apk --update add git curl && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm /var/cache/apk/*
+# Install ShellCheck (prebuilt tarball matching arch)
+RUN set -eux; \
+    arch="$(uname -m)"; \
+    echo "arch is ${arch}"; \
+    if [ "${arch}" = "armv7l" ]; then arch='armv6hf'; fi; \
+    url_base='https://github.com/koalaman/shellcheck/releases/download'; \
+    tar_file="${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.${arch}.tar.xz"; \
+    wget -q "${url_base}/${tar_file}" -O - | tar xJf -; \
+    mv "shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/; \
+    rm -rf "shellcheck-${SHELLCHECK_VERSION}"; \
+    /usr/local/bin/shellcheck --version
 
-# install reviewdog
-ENV REVIEWDOG_VERSION=v0.20.3
-RUN wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/fd59714416d6d9a1c0692d872e38e7f8448df4fc/install.sh | sh -s -- -b /usr/local/bin/ ${REVIEWDOG_VERSION}
+# Build reviewdog from exact tag
+RUN set -eux; \
+    git clone --depth 1 --branch "${REVIEWDOG_VERSION}" https://github.com/reviewdog/reviewdog.git /tmp/reviewdog; \
+    cd /tmp/reviewdog; \
+    go mod edit -require=golang.org/x/crypto@v0.35.0; \
+    go mod edit -require=golang.org/x/oauth2@v0.27.0 || true; \
+    go mod tidy; \
+    go build -trimpath -ldflags "-s -w" -o /usr/local/bin/reviewdog ./cmd/reviewdog; \
+    /usr/local/bin/reviewdog -version || true; \
+    rm -rf /tmp/reviewdog
 
-# install actionlint
-ENV ACTIONLINT_VERSION=1.7.7
-ENV OSTYPE=linux-gnu
-RUN cd /usr/local/bin/ && wget -O - -q https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | sh -s -- ${ACTIONLINT_VERSION}
+# Build actionlint from exact tag
+RUN set -eux; \
+    git clone --depth 1 --branch "${ACTIONLINT_VERSION}" https://github.com/rhysd/actionlint.git /tmp/actionlint; \
+    cd /tmp/actionlint; \
+    go build -trimpath -ldflags "-s -w" -o /usr/local/bin/actionlint ./cmd/actionlint; \
+    /usr/local/bin/actionlint --version; \
+    rm -rf /tmp/actionlint
 
+# Add entrypoint
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
