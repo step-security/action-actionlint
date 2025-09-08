@@ -1,5 +1,5 @@
 # Single base image as requested
-FROM golang:1.24-alpine
+FROM golang:1.25-alpine
 
 # Versions
 ENV SHELLCHECK_VERSION=v0.11.0 \
