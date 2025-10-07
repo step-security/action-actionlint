@@ -3,7 +3,7 @@ FROM golang:1.25-alpine@sha256:b6ed3fd0452c0e9bcdef5597f29cc1418f61672e9d3a2f55b
 
 # Versions
 ENV SHELLCHECK_VERSION=v0.11.0 \
-    REVIEWDOG_VERSION=v0.20.3 \
+    REVIEWDOG_VERSION=v0.21.0 \
     ACTIONLINT_VERSION=v1.7.7
 
 # System deps: build tools, git, curl, wget, xz for .tar.xz, python & pip
