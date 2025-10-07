@@ -7,6 +7,11 @@ on:
         description: "Base branch to create the PR against"
         required: true
         default: "main"
+      mode:
+        description: "Run mode: cherry-pick or verify"
+        required: false
+        default: "cherry-pick"
+
   pull_request:
     types: [opened, synchronize, labeled]
 
