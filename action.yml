@@ -51,7 +51,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/step-security/action-actionlint:v1.67.0@sha256:4cdf116da36532f17fc555c20ac383b8a2d9a8a37892fa9e2d77fd448c979a23' #v1.67.0
+  image: 'docker://ghcr.io/step-security/action-actionlint:v1.67.1@sha256:85548c031e9daddcab0550dccbc0616edff7ed38fbba183fc9390810b821d6ab' #v1.67.1
 branding:
   color: red
   icon: check-circle
