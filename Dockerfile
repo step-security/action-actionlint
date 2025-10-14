@@ -1,5 +1,5 @@
 # Single base image as requested
-FROM golang:1.25.2-alpine3.22@sha256:06cdd34bd531b810650e47762c01e025eb9b1c7eadd191553b91c9f2d549fae8
+FROM golang:1.25.3-alpine3.22@sha256:20ee0b674f987514ae3afb295b6a2a4e5fa11de8cc53a289343bbdab59b0df59
 
 # Versions
 ENV SHELLCHECK_VERSION=v0.11.0 \
