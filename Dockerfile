@@ -1,5 +1,5 @@
 # Single base image as requested
-FROM golang:1.25.3-alpine3.22@sha256:aee43c3ccbf24fdffb7295693b6e33b21e01baec1b2a55acc351fde345e9ec34
+FROM golang:1.25.5-alpine3.23@sha256:26111811bc967321e7b6f852e914d14bede324cd1accb7f81811929a6a57fea9
 
 # Versions
 ENV SHELLCHECK_VERSION=v0.11.0 \
@@ -29,7 +29,7 @@ RUN set -eux; \
 RUN set -eux; \
     git clone --depth 1 --branch "${REVIEWDOG_VERSION}" https://github.com/reviewdog/reviewdog.git /tmp/reviewdog; \
     cd /tmp/reviewdog; \
-    go mod edit -require=golang.org/x/crypto@v0.35.0; \
+    go mod edit -require=golang.org/x/crypto@v0.45.0; \
     go mod edit -require=golang.org/x/oauth2@v0.27.0 || true; \
     go mod tidy; \
     go build -trimpath -ldflags "-s -w" -o /usr/local/bin/reviewdog ./cmd/reviewdog; \
