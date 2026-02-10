@@ -4,7 +4,7 @@ FROM golang:1.25.5-alpine3.23@sha256:26111811bc967321e7b6f852e914d14bede324cd1ac
 # Versions
 ENV SHELLCHECK_VERSION=v0.11.0 \
     REVIEWDOG_VERSION=v0.21.0 \
-    ACTIONLINT_VERSION=v1.7.9
+    ACTIONLINT_VERSION=v1.7.10
 
 # System deps: build tools, git, curl, wget, xz for .tar.xz, python & pip
 RUN set -eux; \
