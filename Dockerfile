@@ -11,7 +11,8 @@ RUN set -eux; \
     apk add --no-cache \
       git curl wget xz \
       build-base \
-      python3 py3-pyflakes
+      python3 py3-pyflakes \
+      jq
 
 # Install ShellCheck (prebuilt tarball matching arch)
 RUN set -eux; \
