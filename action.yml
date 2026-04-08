@@ -53,8 +53,6 @@ runs:
   using: 'docker'
   image: 'docker://ghcr.io/step-security/action-actionlint:v1.71.0@sha256:06ce34c2a9b5566d4998e5c86153628abe752ec2cada1779cb824af7d07f65f0' #v1.71.0
   entrypoint: /entrypoint.sh
-  env:
-    REPO_PRIVATE: ${{ github.event.repository.private }}
 branding:
   color: red
   icon: check-circle
