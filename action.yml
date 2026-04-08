@@ -51,7 +51,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/step-security/action-actionlint:v1.71.0@sha256:06ce34c2a9b5566d4998e5c86153628abe752ec2cada1779cb824af7d07f65f0' #v1.71.0
+  image: 'docker://ghcr.io/step-security/action-actionlint:v1.72.0@sha256:7f6f21f88720f33a61bc714ee7dc6243defcb2f2ae0697bb582e6769825612ae' #v1.72.0
   entrypoint: /entrypoint.sh
 branding:
   color: red
