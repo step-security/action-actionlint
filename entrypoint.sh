@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 REPO_PRIVATE=$(jq -r '.repository.private | tostring' "$GITHUB_EVENT_PATH" 2>/dev/null || echo "")
 UPSTREAM="reviewdog/action-actionlint"
 ACTION_REPO="${GITHUB_ACTION_REPOSITORY:-}"
@@ -39,7 +41,7 @@ if [ "$REPO_PRIVATE" != "false" ]; then
     exit 1
   fi
 fi
-if [ "${RUNNER_DEBUG}" = "1" ] ; then
+if [ "${RUNNER_DEBUG:-}" = "1" ] ; then
   set -x
 fi
 
