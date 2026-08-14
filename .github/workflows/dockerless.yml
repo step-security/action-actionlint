@@ -19,16 +19,16 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: actionlint
-        uses: ./
+        uses: ./dockerless/
         with:
-          tool_name: actionlint
+          tool_name: dockerless actionlint
 
   reviewdog:
     name: runner / reviewdog
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-26.04", "ubuntu-26.04-arm"]') }}
+        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-slim", "ubuntu-26.04", "ubuntu-26.04-arm", "macos-latest", "windows-latest", "windows-11-arm"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -38,10 +38,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: actionlint w/ reviewdog
-        uses: ./
+        uses: ./dockerless/
         with:
           actionlint_flags: examples/broken-workflow.yml
-          tool_name: reviewdog on ${{ matrix.os }}
+          tool_name: dockerless reviewdog on ${{ matrix.os }}
           level: info
 
   shellcheck:
@@ -49,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-26.04", "ubuntu-26.04-arm"]') }}
+        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-slim", "ubuntu-26.04", "ubuntu-26.04-arm", "macos-latest", "windows-latest", "windows-11-arm"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -59,10 +59,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: actionlint w/ shellcheck
-        uses: ./
+        uses: ./dockerless/
         with:
           actionlint_flags: examples/shellcheck.yml
-          tool_name: shellcheck on ${{ matrix.os }}
+          tool_name: dockerless shellcheck on ${{ matrix.os }}
           level: info
 
   pyflakes:
@@ -70,7 +70,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-26.04", "ubuntu-26.04-arm"]') }}
+        os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-26.04"]') || fromJSON('["ubuntu-slim", "ubuntu-26.04", "ubuntu-26.04-arm", "macos-latest", "windows-latest", "windows-11-arm"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -80,8 +80,8 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: actionlint w/ pyflakes
-        uses: ./
+        uses: ./dockerless/
         with:
           actionlint_flags: examples/pyflakes.yml
-          tool_name: pyflakes on ${{ matrix.os }}
+          tool_name: dockerless pyflakes on ${{ matrix.os }}
           level: info
