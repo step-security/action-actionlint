@@ -24,7 +24,7 @@ jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: step-security/action-actionlint@v1
 ```
 
@@ -39,8 +39,8 @@ jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: reviewdog/action-actionlint/dockerless@v1
+      - uses: actions/checkout@v7
+      - uses: step-security/action-actionlint/dockerless@v1
 ```
 
 The dockerless version directly installs actionlint and reviewdog on the runner without using Docker.
