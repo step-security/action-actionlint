@@ -1,6 +1,6 @@
 FROM python:3.14.7-alpine3.24@sha256:f2186fc449b8f7aa5897b542777427a21dc77864f271cf4d1646361cf681c2b9
 
-RUN apk --no-cache add git curl bash
+RUN apk --no-cache add git curl bash jq
 
 COPY scripts scripts
 
